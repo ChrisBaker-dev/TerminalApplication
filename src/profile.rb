@@ -2,10 +2,10 @@ class Profile
 
     attr_reader :username, :description, :available_funds, :investments
 
-    def initialize(username)
+    def initialize(username, starting_funds)
         @username = username
-        @description = nil
-        @available_funds = nil
+        @description = ''
+        @available_funds = starting_funds
         @investments = {} #{'market synbol' => [shares, value]}
 
     end
@@ -14,7 +14,7 @@ class Profile
         @username = username
     end
 
-    def update_description(desciption)
+    def update_description(description)
         @description = description
     end
 
@@ -22,6 +22,8 @@ class Profile
         if @investments.has_key? investment
             @investments[investment][0] += shares
             @investments[investment][1] += shares * cost_per
+        else
+            @investments[investment] = [shares, cost_per * shares]
         end
     end
 
