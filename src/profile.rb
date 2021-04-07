@@ -1,14 +1,14 @@
 class Profile
 
-    attr_reader :username, :description, :available_funds, :investments
+    attr_reader :username, :description, :available_funds, :investments, :starting_funds
 
-    def initialize(username, starting_funds)
+    def initialize(username, starting_funds) # may want to remove starting funds from here
         @username = username
         @description = ''
         @available_funds = starting_funds
+        @starting_funds = starting_funds
         @investments = {} #{'market synbol' => [shares, value]}
         # @key = ''
-
     end
 
     def change_username(username)
@@ -33,6 +33,14 @@ class Profile
     #     @key = key
     # end
 
+    def profile_data()
+        return {
+            'description': @description,
+            'investments': @investments,
+            'available_funds': @available_funds,
+            'starting_funds': @starting_funds
+        }
+    end
 
 
 

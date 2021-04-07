@@ -1,5 +1,5 @@
 require_relative './profile.rb'
-require 'csv'
+require 'json'
 
 # Welcoming message to the application
 # Returns string login or sign-up depending on users choice
@@ -33,6 +33,25 @@ def create_profile()
     profile = Profile.new(username, funds)
 end
 
+# Saves a profile object to JSON file
+def save_profile(profile, file)
+    result = load_profiles(file)
+    data = profile.profile_data
+    result[profile.username] = data
+    wFile = File.open("profiles.json", 'w')
+    wFile.write(JSON.pretty_generate(result))
+    wFile.close
+
+end
+
+# Turns JSON file of profiles into a hash
+def load_profiles(file)
+    read = File.open(file)
+    string = read.read
+    read.close
+    hash = JSON.parse(string)
+    return hash
+end
 
 # Request user for IEX API key for querying stocks
 def enter_key()
@@ -48,6 +67,7 @@ def main()
     case option
     when "sign-up"
         profile = create_profile()
+        save_profile(profile, 'profiles.json')
     when "login"
         #profile = load_profile()
         puts "TODO"
