@@ -7,6 +7,7 @@ class Profile
         @description = ''
         @available_funds = starting_funds
         @investments = {} #{'market synbol' => [shares, value]}
+        # @key = ''
 
     end
 
@@ -27,6 +28,10 @@ class Profile
         end
     end
 
+    # Adds key to use api
+    # def add_key(key)
+    #     @key = key
+    # end
 
 
 
