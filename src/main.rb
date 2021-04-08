@@ -31,10 +31,18 @@ def create_profile()
     username = get_username()
     puts "Please enter a starting amount of funds (ex. 50000):"
     funds = gets.chomp!
-
+    funds = add_funds(funds)
     profile = Profile.new(username)
     profile.add_starting_funds(funds)
     return profile
+end
+
+def add_funds(funds)
+    until funds.to_i.is_a?(Integer) and funds.to_i > 0 do
+        puts "Please enter a number:"
+        funds = gets.chomp!
+    end
+    return funds.to_i
 end
 
 # gets a username from user
