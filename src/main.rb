@@ -1,5 +1,7 @@
 require_relative './profile.rb'
+require_relative './exceptions.rb'
 require 'json'
+
 
 # Welcoming message to the application
 # Returns string login or sign-up depending on users choice
@@ -26,22 +28,31 @@ end
 def create_profile()
     puts "-------------------------------------------------"
     puts "You have selected to create a new profile"
-    puts "Please enter a username:"
-    username = gets.chomp!
+    username = get_username()
     puts "Please enter a starting amount of funds (ex. 50000):"
     funds = gets.chomp!
-    profile = Profile.new(username, funds)
+
+    profile = Profile.new(username)
+    profile.add_starting_funds(funds)
+    return profile
 end
+
+# gets a username from user
+def get_username()
+    puts "Please enter a username:"
+    return gets.chomp!
+end
+
 
 # Saves a profile object to JSON file
 def save_profile(profile, file)
     result = load_profiles(file)
+    puts result
     data = profile.profile_data
     result[profile.username] = data
     wFile = File.open("profiles.json", 'w')
     wFile.write(JSON.pretty_generate(result))
     wFile.close
-
 end
 
 # Turns JSON file of profiles into a hash
@@ -52,6 +63,20 @@ def load_profiles(file)
     hash = JSON.parse(string)
     return hash
 end
+
+# Load a singular profile to perform trades on
+def load_profile(username, file)
+    hash = load_profiles(file)
+    if !hash.key?(username)
+        raise ProfileDoesntExist.new("This profile does not exist")
+    end
+    profile = Profile.new(username)
+    profile.add_starting_funds(hash[username]['starting_funds'])
+    return profile
+end
+
+
+
 
 # Request user for IEX API key for querying stocks
 def enter_key()
@@ -69,7 +94,10 @@ def main()
         profile = create_profile()
         save_profile(profile, 'profiles.json')
     when "login"
-        #profile = load_profile()
+        username = get_username
+        profile = load_profile(username, 'profiles.json')
+        puts profile.username
+        puts profile.profile_data
         puts "TODO"
     when "quit"
         puts "Thank you for using CB Finance"

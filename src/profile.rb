@@ -2,7 +2,7 @@ class Profile
 
     attr_reader :username, :description, :available_funds, :investments, :starting_funds
 
-    def initialize(username, starting_funds) # may want to remove starting funds from here
+    def initialize(username) # may want to remove starting funds from here
         @username = username
         @description = ''
         @available_funds = starting_funds
@@ -17,6 +17,11 @@ class Profile
 
     def update_description(description)
         @description = description
+    end
+
+    # Amount of money an account starts with
+    def add_starting_funds(starting_funds)
+        @starting_funds = starting_funds
     end
 
     def add_investments(investment, shares, cost_per)
