@@ -1,3 +1,4 @@
+require 'tty-table'
 class Profile
 
     attr_reader :username, :description, :available_funds, :investments, :starting_funds
@@ -9,6 +10,7 @@ class Profile
         @starting_funds = starting_funds
         @investments = {} #{'market synbol' => [shares, value]}
         # @key = ''
+        @growth = 0
     end
 
     def change_username(username)
@@ -52,6 +54,13 @@ class Profile
         }
     end
 
+    def profile_summary()
+        table = TTY::Table.new do |t|
+            t << ["Username:", @username]
+            t << ["Available Funds", @available_funds]
+            t << ["Growth", @growth]
+        end
+        return table
 
-
+    end
 end

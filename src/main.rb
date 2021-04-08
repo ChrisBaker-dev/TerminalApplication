@@ -1,27 +1,28 @@
 require_relative './profile.rb'
 require_relative './exceptions.rb'
 require 'json'
+require 'tty-prompt'
+require 'tty-table'
 
 
 # Welcoming message to the application
 # Returns string login or sign-up depending on users choice
-def welcome_message()
-    options = "options: login, sign-up or quit"
+def welcome_message(prompt)
+    options = ["Login", "Sign-up", "Quit"]
 
     puts "-------------------------------------------------"
     puts "Thank you for using CB Finance Tools!"
-    puts "Would you like to login or sign-up?"
-    puts options
+    prompt.select("Would you like to Login or Sign-up?", options)
 
-    while true
-        answer = gets.chomp!.downcase
-        if answer == "login" or answer == "sign-up" or answer == "quit"
-            return answer
-        else 
-            puts "Please enter valid option"
-            puts options
-        end
-    end
+    # while true
+    #     answer = gets.chomp!.downcase
+    #     if answer == "login" or answer == "sign-up" or answer == "quit"
+    #         return answer
+    #     else 
+    #         puts "Please enter valid option"
+    #         puts options
+    #     end
+    # end
 end
 
 # Creates object Profile for new account
@@ -105,26 +106,39 @@ def enter_key()
     return gets
 end
 
+def profile_menu(prompt)
+    choices = ["Account Summary", "Investment Summary", "Trade", "Export Data", "Quit"]
+    prompt.select("What would you like to do?", choices)
+end
+
+def profile_controller(prompt, profile)
+    response = profile_menu(prompt)
+    case response
+    when "Account Summary"
+        table = profile.profile_summary
+        puts table.render(:ascii, alignments: [:left, :center])
+    end
+end
 
 
 # controller for terminal app
 def main()
-    option = welcome_message()
+    prompt = TTY::Prompt.new
+    option = welcome_message(prompt)
     case option
-    when "sign-up"
+    when "Sign-up"
         profile = create_profile('profiles.json')
         profile.update_available_funds(profile.starting_funds)
-
         save_profile(profile, 'profiles.json')
-    when "login"
-        username = get_username
+    when "Login"
+        username = get_username()
         profile = load_profile(username, 'profiles.json')
         puts "TODO"
-    when "quit"
+    when "Quit"
         puts "Thank you for using CB Finance"
         exit
     end
-    puts "WE HERE"
+    profile_controller(prompt, profile)
 
 end
 main()
