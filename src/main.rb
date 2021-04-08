@@ -1,5 +1,6 @@
 require_relative './profile.rb'
 require_relative './exceptions.rb'
+require_relative './stock.rb'
 require 'json'
 require 'tty-prompt'
 require 'tty-table'
@@ -117,7 +118,38 @@ def profile_controller(prompt, profile)
     when "Account Summary"
         table = profile.profile_summary
         puts table.render(:ascii, alignments: [:left, :center])
+    when "Trade"
+        ticker_info(profile, prompt)
     end
+end
+
+# Checks if given ticker name is a tradeable stock
+# True if stock is tradable, else false
+def is_stock?(stock, key)
+    begin
+        result = Stock.new(stock, key)
+    rescue Exception
+        return false
+    end
+    return true
+end
+
+def ticker_info(profile, prompt)
+    puts "What stock would you like to look at?"
+    stock = gets.chomp.upcase
+    until is_stock?(stock, profile.key) == true
+        puts "We can not find this stock in the database, please enter another"
+        stock = gets.chomp.upcase
+    end
+    ticker = Stock.new(stock, profile.key)
+    puts ticker.get_price()
+    choices = ["Stock information", "Make Trade", "News", "Back"]
+end
+
+def get_stock_info(stock, profile, prompt)
+    
+
+    
 end
 
 
@@ -138,6 +170,9 @@ def main()
         puts "Thank you for using CB Finance"
         exit
     end
+    puts "Please enter your public IEX key:"
+    key = gets.chomp!
+    profile.add_key(key)
     profile_controller(prompt, profile)
 
 end

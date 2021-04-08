@@ -1,5 +1,7 @@
 require 'iex-ruby-client'
+require 'tty-table'
 class Stock
+    attr_reader :ticker
 
     def initialize(ticker, iex_key)
         @ticker = ticker
@@ -22,17 +24,6 @@ class Stock
     def price_percent_change()
         return @quote.change_percent
     end
-
-    
-
-
-
-
-
-
-
-
-
 
 
 end

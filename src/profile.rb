@@ -1,7 +1,7 @@
 require 'tty-table'
 class Profile
 
-    attr_reader :username, :description, :available_funds, :investments, :starting_funds
+    attr_reader :username, :description, :available_funds, :investments, :starting_funds, :key
 
     def initialize(username) # may want to remove starting funds from here
         @username = username
@@ -9,7 +9,7 @@ class Profile
         @available_funds = starting_funds
         @starting_funds = starting_funds
         @investments = {} #{'market synbol' => [shares, value]}
-        # @key = ''
+        @key = ''
         @growth = 0
     end
 
@@ -41,9 +41,9 @@ class Profile
     end
 
     # Adds key to use api
-    # def add_key(key)
-    #     @key = key
-    # end
+     def add_key(key)
+         @key = key
+    end
 
     def profile_data()
         return {

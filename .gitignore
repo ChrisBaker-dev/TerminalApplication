@@ -2,3 +2,4 @@ src/test/Gemfile
 src/test/Gemfile.lock
 .DS_Store
 src/.DS_Store
+src/iex_key.csv
