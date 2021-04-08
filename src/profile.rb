@@ -24,6 +24,11 @@ class Profile
         @starting_funds = starting_funds
     end
 
+    # updates amount of funds that can be spent
+    def update_available_funds(amount)
+        @available_funds = amount
+    end
+
     def add_investments(investment, shares, cost_per)
         if @investments.has_key? investment
             @investments[investment][0] += shares

@@ -25,10 +25,14 @@ def welcome_message()
 end
 
 # Creates object Profile for new account
-def create_profile()
+def create_profile(profiles)
     puts "-------------------------------------------------"
     puts "You have selected to create a new profile"
     username = get_username()
+    hash = load_profiles(profiles)
+    until is_valid_username?(username, hash) == true do
+        username = get_username()
+    end
     puts "Please enter a starting amount of funds (ex. 50000):"
     funds = gets.chomp!
     funds = add_funds(funds)
@@ -37,6 +41,7 @@ def create_profile()
     return profile
 end
 
+# Returns an integer if the input is a number
 def add_funds(funds)
     until funds.to_i.is_a?(Integer) and funds.to_i > 0 do
         puts "Please enter a number:"
@@ -51,11 +56,19 @@ def get_username()
     return gets.chomp!
 end
 
+# Checks if the username entered is available
+def is_valid_username?(username, profiles)
+    if profiles.include?(username)
+        puts "#{username} is already taken"
+        return false
+    end
+    return true
+end
+
 
 # Saves a profile object to JSON file
 def save_profile(profile, file)
     result = load_profiles(file)
-    puts result
     data = profile.profile_data
     result[profile.username] = data
     wFile = File.open("profiles.json", 'w')
@@ -99,21 +112,19 @@ def main()
     option = welcome_message()
     case option
     when "sign-up"
-        profile = create_profile()
+        profile = create_profile('profiles.json')
+        profile.update_available_funds(profile.starting_funds)
+
         save_profile(profile, 'profiles.json')
     when "login"
         username = get_username
         profile = load_profile(username, 'profiles.json')
-        puts profile.username
-        puts profile.profile_data
         puts "TODO"
     when "quit"
         puts "Thank you for using CB Finance"
         exit
     end
     puts "WE HERE"
-
-
 
 end
 main()

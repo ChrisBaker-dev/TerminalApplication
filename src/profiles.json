@@ -3,7 +3,7 @@
     "description": "",
     "investments": {
     },
-    "available_funds": null,
-    "starting_funds": "50000"
+    "available_funds": 50000,
+    "starting_funds": 50000
   }
 }
