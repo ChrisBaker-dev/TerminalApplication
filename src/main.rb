@@ -109,8 +109,16 @@ def profile_controller(prompt, profile)
     when "Account Summary"
         table = profile.profile_summary
         puts table.render(:ascii, alignments: [:left, :center])
+        profile_controller(prompt, profile)
     when "Trade"
         ticker_info(profile, prompt)
+    when "Investment Summary"
+        table = profile.display_holdings()
+        puts table.render(:ascii, alignments: [:left, :center])
+        profile_controller(prompt, profile)
+    when "Quit"
+        puts "Thank you for using CB Finance"
+        exit
     end
 end
 
