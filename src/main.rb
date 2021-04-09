@@ -113,6 +113,7 @@ def profile_controller(prompt, profile)
     when "Trade"
         ticker_info(profile, prompt)
     when "Investment Summary"
+        update_stock_values(profile)
         table = profile.display_holdings()
         puts table.render(:ascii, alignments: [:left, :center])
         profile_controller(prompt, profile)
@@ -120,6 +121,21 @@ def profile_controller(prompt, profile)
         puts "Thank you for using CB Finance"
         exit
     end
+end
+
+# Updates the share price on stocks in profile
+def update_stock_values(profile)
+    stocks = profile.investments
+    puts stocks
+    tickers = []
+    stocks.each do |key, value|
+        tickers << key
+    end
+    tickers.each do |ticker|
+        value = Stock.new(ticker, profile.key)
+        stocks[ticker][1] = value.get_price()
+    end
+    profile.load_investments(stocks)
 end
 
 # Checks if given ticker name is a tradeable stock
