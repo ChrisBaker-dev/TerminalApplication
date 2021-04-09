@@ -21,6 +21,10 @@ class Profile
         @description = description
     end
 
+    def load_investments(investments)
+        @investments = investments
+    end
+
     # Amount of money an account starts with
     def add_starting_funds(starting_funds)
         @starting_funds = starting_funds

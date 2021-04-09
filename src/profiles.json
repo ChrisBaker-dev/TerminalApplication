@@ -3,8 +3,12 @@
     "description": "",
     "investments": {
       "AAPL": [
-        24,
-        3128.64
+        36,
+        4692.96
+      ],
+      "MSFT": [
+        10,
+        2532.5
       ]
     },
     "available_funds": null,

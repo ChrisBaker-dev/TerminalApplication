@@ -95,10 +95,10 @@ def load_profile(username, file)
     end
     profile = Profile.new(username)
     profile.add_starting_funds(hash[username]['starting_funds'])
+    profile.load_investments(hash[username]["investments"])
+    profile.update_available_funds(hash[username]['available_funds'])
     return profile
 end
-
-
 
 
 # Request user for IEX API key for querying stocks
