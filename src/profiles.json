@@ -2,8 +2,12 @@
   "ChrisB": {
     "description": "",
     "investments": {
+      "AAPL": [
+        24,
+        3128.64
+      ]
     },
-    "available_funds": 50000,
+    "available_funds": null,
     "starting_funds": 50000
   }
 }

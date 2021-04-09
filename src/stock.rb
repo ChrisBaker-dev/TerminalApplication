@@ -35,5 +35,9 @@ class Stock
         return table
     end
 
+    def update_quote()
+        @quote = @client.quote(@ticker)
+    end
+
 
 end

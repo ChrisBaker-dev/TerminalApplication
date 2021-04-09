@@ -142,14 +142,14 @@ def ticker_info(profile, prompt)
         stock = gets.chomp.upcase
     end
     ticker = Stock.new(stock, profile.key)
-    choices = ["Stock Information", "Make Trade", "News", "Back"]
+    choices = ["Stock Information", "Make Trade", "Get News", "Back"]
     response = prompt.select("What would you like to do with #{ticker.ticker}?", choices)
     case response
     when "Stock Information"
         get_stock_info(ticker, profile, prompt)
     when "Make Trade"
-        puts "TODOOO"
-    when "News"
+        trade_controller(ticker, profile, prompt)
+    when "Get News"
         puts "TODOOOO"
     when "Back"
         profile_menu(prompt)
@@ -168,7 +168,35 @@ def get_stock_info(stock, profile, prompt)
     end
 end
 
-def make_trade(ticker, profile, prompt)
+def trade_controller(ticker, profile, prompt)
+    num_shares, price = num_shares(ticker, profile, prompt)
+    profile.add_investments(ticker.ticker, num_shares, price)
+    puts "Successfully purchased #{num_shares} shares of #{ticker.ticker} for $#{(num_shares * price).round(2)}"
+    save_profile(profile, 'profiles.json')
+    profile_controller(prompt, profile)
+end
+
+def num_shares(ticker, profile, prompt)
+    options = ["Yes", "No"]
+    puts "Acquiring up to date information..."
+    ticker.update_quote()
+    message = "#{ticker.ticker} is currently trading at $#{ticker.get_price}"
+    puts message
+    response = prompt.select("Would you like to purchase #{ticker.ticker}?", options)
+    case response
+    when "Yes"
+        puts "How many shares would you like to purchase?"
+        num_shares = gets.chomp!
+        until num_shares.to_i.is_a?(Integer) and num_shares.to_i > 0
+            puts "Please enter a whole number."
+            ticker.update_quote()
+            puts message
+            num_shares = gets.chomp!
+        end
+        return [num_shares.to_i, ticker.get_price()]
+    when "No"
+        profile_controller(prompt, profile)
+    end
 end
 
 def menu_director(input)

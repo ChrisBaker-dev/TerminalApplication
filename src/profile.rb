@@ -32,11 +32,11 @@ class Profile
     end
 
     def add_investments(investment, shares, cost_per)
-        if @investments.has_key? investment
+        if @investments.key?(investment)
             @investments[investment][0] += shares
-            @investments[investment][1] += shares * cost_per
+            @investments[investment][1] += (shares * cost_per).round(2)
         else
-            @investments[investment] = [shares, cost_per * shares]
+            @investments[investment] = [shares, (cost_per * shares).round(2)]
         end
     end
 
