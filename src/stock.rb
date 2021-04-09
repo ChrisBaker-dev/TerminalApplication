@@ -25,5 +25,15 @@ class Stock
         return @quote.change_percent
     end
 
+    def stock_info()
+        table = TTY::Table.new do |t|
+            t << ["Ticker", @ticker]
+            t << ["Price", get_price()]
+            t << ["Price Change (Daily)", price_change()]
+            t << ["Percentage Change (Daily)", price_percent_change()]
+        end
+        return table
+    end
+
 
 end

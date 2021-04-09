@@ -142,15 +142,38 @@ def ticker_info(profile, prompt)
         stock = gets.chomp.upcase
     end
     ticker = Stock.new(stock, profile.key)
-    puts ticker.get_price()
-    choices = ["Stock information", "Make Trade", "News", "Back"]
+    choices = ["Stock Information", "Make Trade", "News", "Back"]
+    response = prompt.select("What would you like to do with #{ticker.ticker}?", choices)
+    case response
+    when "Stock Information"
+        get_stock_info(ticker, profile, prompt)
+    when "Make Trade"
+        puts "TODOOO"
+    when "News"
+        puts "TODOOOO"
+    when "Back"
+        profile_menu(prompt)
+    end
+
 end
 
 def get_stock_info(stock, profile, prompt)
-    
-
-    
+    table =  stock.stock_info()
+    puts table.render(:ascii, alignments: [:left, :center])
+    choices = ["Make Trade", "News", "Back"]
+    input = prompt.select("What would you like to do?", choices)
+    case input
+    when "Back"
+        profile_controller(prompt, profile)
+    end
 end
+
+def make_trade(ticker, profile, prompt)
+end
+
+def menu_director(input)
+end
+
 
 
 # controller for terminal app
