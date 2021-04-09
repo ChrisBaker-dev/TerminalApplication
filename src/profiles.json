@@ -3,15 +3,15 @@
     "description": "",
     "investments": {
       "AAPL": [
-        36,
-        4692.96
+        32,
+        4432.24
       ],
-      "MSFT": [
-        10,
-        2532.5
+      "TSLA": [
+        26,
+        17778.8
       ]
     },
-    "available_funds": null,
+    "available_funds": 39383.92,
     "starting_funds": 50000
   }
 }

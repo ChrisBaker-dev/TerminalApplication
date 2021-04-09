@@ -44,6 +44,10 @@ class Profile
         end
     end
 
+    def remove_investments(ticker, shares)
+        @investments[ticker][0] -= shares 
+    end
+
     # Adds key to use api
      def add_key(key)
          @key = key
@@ -65,6 +69,29 @@ class Profile
             t << ["Growth", @growth]
         end
         return table
-
     end
+
+
+    ## NEED TO FIX THE PRICE
+    def display_holdings()
+        table = TTY::Table.new
+        table << ["Stock", "Shares", "Price", "Total"]
+        if @investments.size == 0
+            return
+        end
+        @investments.each do |key, value|
+            table << [key, value[0], value[1], value[0] * value[1]]
+        end
+        return table
+    end
+
+    def get_stock_shares(ticker, num_shares_sell)
+        if @investments.key?(ticker) == false
+            return false
+        elsif @investments[ticker][0] < num_shares_sell
+            return false
+        end
+        return true
+    end
+
 end

@@ -14,16 +14,6 @@ def welcome_message(prompt)
     puts "-------------------------------------------------"
     puts "Thank you for using CB Finance Tools!"
     prompt.select("Would you like to Login or Sign-up?", options)
-
-    # while true
-    #     answer = gets.chomp!.downcase
-    #     if answer == "login" or answer == "sign-up" or answer == "quit"
-    #         return answer
-    #     else 
-    #         puts "Please enter valid option"
-    #         puts options
-    #     end
-    # end
 end
 
 # Creates object Profile for new account
@@ -40,6 +30,7 @@ def create_profile(profiles)
     funds = add_funds(funds)
     profile = Profile.new(username)
     profile.add_starting_funds(funds)
+    profile.update_available_funds(funds)
     return profile
 end
 
@@ -134,28 +125,44 @@ def is_stock?(stock, key)
     return true
 end
 
-def ticker_info(profile, prompt)
+# Requests user what stock they want and verifies if it exists
+def verify_stock(profile)
     puts "What stock would you like to look at?"
     stock = gets.chomp.upcase
     until is_stock?(stock, profile.key) == true
         puts "We can not find this stock in the database, please enter another"
         stock = gets.chomp.upcase
     end
-    ticker = Stock.new(stock, profile.key)
-    choices = ["Stock Information", "Make Trade", "Get News", "Back"]
-    response = prompt.select("What would you like to do with #{ticker.ticker}?", choices)
+    return stock
+
+end
+
+def ticker_info(profile, prompt)
+    choices = ["Buy Stock", "Sell Stock", "Back"]
+    response = prompt.select("What move would you like to make?", choices)
     case response
-    when "Stock Information"
-        get_stock_info(ticker, profile, prompt)
-    when "Make Trade"
-        trade_controller(ticker, profile, prompt)
-    when "Get News"
+
+    when "Buy Stock"
+        stock = verify_stock(profile)
+        ticker = Stock.new(stock, profile.key)
+        purchase_controller(ticker, profile, prompt)
+    when "Sell Stock"
+        # Display current holdings
+        table = profile.display_holdings
+        puts table.render(:ascii, alignments: [:left, :center])
+        stock = verify_stock(profile)
+        ticker = Stock.new(stock, profile.key)
+        sell_controller(ticker, profile, prompt)
         puts "TODOOOO"
     when "Back"
         profile_menu(prompt)
     end
 
 end
+
+    # when "Stock Information"
+    #     get_stock_info(ticker, profile, prompt)
+
 
 def get_stock_info(stock, profile, prompt)
     table =  stock.stock_info()
@@ -168,24 +175,42 @@ def get_stock_info(stock, profile, prompt)
     end
 end
 
-def trade_controller(ticker, profile, prompt)
-    num_shares, price = num_shares(ticker, profile, prompt)
+# Purchases stock and updates profile accordingly
+def purchase_controller(ticker, profile, prompt)
+    action = "purchase"
+    num_shares, price = num_shares(ticker, profile, prompt, action)
     profile.add_investments(ticker.ticker, num_shares, price)
     puts "Successfully purchased #{num_shares} shares of #{ticker.ticker} for $#{(num_shares * price).round(2)}"
+    profile.update_available_funds(profile.available_funds - (num_shares * price).round(2))
     save_profile(profile, 'profiles.json')
     profile_controller(prompt, profile)
 end
 
-def num_shares(ticker, profile, prompt)
+# Sells stock and updates profile accordingly
+def sell_controller(ticker, profile, prompt)
+    action = "sell"
+    num_shares, price = num_shares(ticker, profile, prompt, action)
+    if profile.get_stock_shares(ticker.ticker, num_shares) == false
+        puts "You can not sell more shares than you own."
+        num_shares, price = num_shares(ticker, profile, prompt, action)
+    end
+    puts "Successfully sold #{num_shares} shares of #{ticker.ticker} for $#{(num_shares * price).round(2)}"
+    profile.update_available_funds(profile.available_funds + (num_shares * price).round(2))
+    profile.remove_investments(ticker.ticker, num_shares)
+    save_profile(profile, 'profiles.json')
+    profile_controller(prompt, profile)
+end
+
+def num_shares(ticker, profile, prompt, action)
     options = ["Yes", "No"]
     puts "Acquiring up to date information..."
     ticker.update_quote()
     message = "#{ticker.ticker} is currently trading at $#{ticker.get_price}"
     puts message
-    response = prompt.select("Would you like to purchase #{ticker.ticker}?", options)
+    response = prompt.select("Would you like to #{action} #{ticker.ticker}?", options)
     case response
     when "Yes"
-        puts "How many shares would you like to purchase?"
+        puts "How many shares would you like to #{action}?"
         num_shares = gets.chomp!
         until num_shares.to_i.is_a?(Integer) and num_shares.to_i > 0
             puts "Please enter a whole number."
@@ -197,6 +222,9 @@ def num_shares(ticker, profile, prompt)
     when "No"
         profile_controller(prompt, profile)
     end
+end
+
+def sell_shares(profile, prompt)
 end
 
 def menu_director(input)
