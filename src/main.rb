@@ -329,4 +329,23 @@ def main()
     profile_controller(prompt, profile)
 
 end
-main()
+
+if ARGV.size == 0
+    main()
+end
+
+if ARGV.include? "--help" and ARGV.size == 1
+    puts "Welcome to the CB Finance Help Room"
+    puts "To use this app, follow these instructions"
+    puts "1) Direct your terminal to the src folder containing this application"
+    puts "2) type ./install.sh - This will install all dependencies for my application"
+    puts "Alternatively, view the README.md doc or navigate to my github for installation instructions https://github.com/ChrisBaker-dev/TerminalApplication"
+    puts "3) View the README.md document for instructions on obtaining a API Key"
+    puts "Or navigate to my github account at https://github.com/ChrisBaker-dev/TerminalApplication"
+    puts "4)Once you have obtained your API Key, type [echo 'YOUR API KEY HERE' >> .env] in \nthe command line without the braces[]"
+    puts "This will automate the software to make loading the application much more efficiently"
+    puts "\n\n"
+    puts "COMMANDS:"
+    puts "ruby main.rb --help"
+    puts "ruby main.rb profile_name  => skips login screen if valid"
+end
