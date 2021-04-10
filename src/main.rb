@@ -107,6 +107,7 @@ def profile_controller(prompt, profile)
     response = profile_menu(prompt)
     case response
     when "Account Summary"
+        profile.update_growth
         table = profile.profile_summary
         puts table.render(:ascii, alignments: [:left, :center])
         profile_controller(prompt, profile)
@@ -126,7 +127,6 @@ end
 # Updates the share price on stocks in profile
 def update_stock_values(profile)
     stocks = profile.investments
-    puts stocks
     tickers = []
     stocks.each do |key, value|
         tickers << key
@@ -158,7 +158,16 @@ def verify_stock(profile)
         stock = gets.chomp.upcase
     end
     return stock
+end
 
+# Checks to make sure the user has enough money for purchase
+def verify_funds_available(profile, shares, cost)
+    available_funds = profile.available_funds
+    total = shares * cost
+    if available_funds < total
+        return false
+    end
+    return true
 end
 
 def ticker_info(profile, prompt)

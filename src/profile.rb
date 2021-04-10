@@ -25,6 +25,13 @@ class Profile
         @investments = investments
     end
 
+    # Total Percentage growth of profiles investments/funds
+    def update_growth()
+        @growth = (((get_holdings_total_value + @available_funds)/
+                    @starting_funds).round(2)) * 100
+        return @growth
+    end
+
     # Amount of money an account starts with
     def add_starting_funds(starting_funds)
         @starting_funds = starting_funds
@@ -66,7 +73,7 @@ class Profile
         table = TTY::Table.new do |t|
             t << ["Username:", @username]
             t << ["Available Funds", @available_funds]
-            t << ["Growth", @growth]
+            t << ["Growth", "%" + @growth.to_s]
         end
         return table
     end
@@ -92,6 +99,15 @@ class Profile
             return false
         end
         return true
+    end
+    # Returns the total value of all stocks being held
+    def get_holdings_total_value()
+        result = 0
+        @investments.each do |key, value|
+            result = result + (value[0] * value[1])
+            result.round(2)
+        end
+        return result
     end
 
 end

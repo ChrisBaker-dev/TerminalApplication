@@ -9,9 +9,20 @@
       "TSLA": [
         28,
         683.8
+      ],
+      "MSFT": [
+        3,
+        255.85
       ]
     },
-    "available_funds": 37494.88,
+    "available_funds": 39000.12,
     "starting_funds": 50000
+  },
+  "Jerry": {
+    "description": "",
+    "investments": {
+    },
+    "available_funds": 10000,
+    "starting_funds": 10000
   }
 }
