@@ -82,7 +82,8 @@ end
 def load_profile(username, file)
     hash = load_profiles(file)
     if !hash.key?(username)
-        raise ProfileDoesntExist.new("This profile does not exist")
+        puts ProfileDoesntExist.new("This profile does not exist")
+        login_check()
     end
     profile = Profile.new(username)
     profile.add_starting_funds(hash[username]['starting_funds'])
@@ -275,6 +276,23 @@ def verify_iex_key(key)
     return true
 end
 
+# Controller for checking if login is successful
+def login_check()
+    username = get_username()
+    if username == 'quit'
+        handle_exit()
+    end
+    profile = load_profile(username, 'profiles.json')
+    return profile
+end
+
+# Exit protocol for application
+def handle_exit()
+    puts "Thank you for using CB Finance"
+    exit
+end
+
+
 # controller for terminal app
 def main()
     prompt = TTY::Prompt.new
@@ -285,12 +303,9 @@ def main()
         profile.update_available_funds(profile.starting_funds)
         save_profile(profile, 'profiles.json')
     when "Login"
-        username = get_username()
-        profile = load_profile(username, 'profiles.json')
-        puts "TODO"
+        profile = login_check()
     when "Quit"
-        puts "Thank you for using CB Finance"
-        exit
+        handle_exit()
     end
     puts "Please enter your public IEX key:"
     key = gets.chomp!
