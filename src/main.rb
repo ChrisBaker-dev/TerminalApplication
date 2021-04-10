@@ -107,6 +107,7 @@ def profile_controller(prompt, profile)
     response = profile_menu(prompt)
     case response
     when "Account Summary"
+        update_stock_values(profile)
         profile.update_growth
         table = profile.profile_summary
         puts table.render(:ascii, alignments: [:left, :center])
@@ -263,7 +264,16 @@ end
 def menu_director(input)
 end
 
-
+# Verifies IEX API key is valid
+# Returns false if not
+def verify_iex_key(key)
+    begin
+        test = Stock.new("MSFT", key)
+    rescue 
+        return false
+    end
+    return true
+end
 
 # controller for terminal app
 def main()
@@ -284,6 +294,12 @@ def main()
     end
     puts "Please enter your public IEX key:"
     key = gets.chomp!
+    puts "Verifying API Key..."
+    until verify_iex_key(key) == true
+        puts "Sorry, that key did not work, please enter a new key or enter 'quit':"
+        key = gets.chomp!
+        puts "Verifying API Key..."
+    end
     profile.add_key(key)
     profile_controller(prompt, profile)
 
