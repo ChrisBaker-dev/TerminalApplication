@@ -99,11 +99,13 @@ def enter_key()
     return gets
 end
 
+# Displays top level menu and returns choice
 def profile_menu(prompt)
-    choices = ["Account Summary", "Investment Summary", "Trade", "Export Data", "Quit"]
+    choices = ["Account Summary", "Investment Summary", "Trade", "Quit"]
     prompt.select("What would you like to do?", choices)
 end
 
+# Top level menu controller
 def profile_controller(prompt, profile)
     response = profile_menu(prompt)
     case response
@@ -172,6 +174,7 @@ def verify_funds_available(profile, shares, cost)
     return true
 end
 
+# 
 def ticker_info(profile, prompt)
     choices = ["Buy Stock", "Sell Stock", "Back"]
     response = prompt.select("What move would you like to make?", choices)
@@ -188,7 +191,6 @@ def ticker_info(profile, prompt)
         stock = verify_stock(profile)
         ticker = Stock.new(stock, profile.key)
         sell_controller(ticker, profile, prompt)
-        puts "TODOOOO"
     when "Back"
         profile_menu(prompt)
     end
@@ -214,11 +216,18 @@ end
 def purchase_controller(ticker, profile, prompt)
     action = "purchase"
     num_shares, price = num_shares(ticker, profile, prompt, action)
-    profile.add_investments(ticker.ticker, num_shares, price)
-    puts "Successfully purchased #{num_shares} shares of #{ticker.ticker} for $#{(num_shares * price).round(2)}"
-    profile.update_available_funds(profile.available_funds - (num_shares * price).round(2))
-    save_profile(profile, 'profiles.json')
-    profile_controller(prompt, profile)
+    if verify_funds_available(profile, num_shares, price) == false
+        puts "Insufficient funds"
+        ticker_info(profile, prompt)
+        return
+    else 
+        profile.add_investments(ticker.ticker, num_shares, price)
+        puts "Successfully purchased #{num_shares} shares of #{ticker.ticker} for $#{(num_shares * price).round(2)}"
+        profile.update_available_funds(profile.available_funds - (num_shares * price).round(2))
+        save_profile(profile, 'profiles.json')
+        profile_controller(prompt, profile)
+    end
+    return
 end
 
 # Sells stock and updates profile accordingly

@@ -3,19 +3,19 @@
     "description": "",
     "investments": {
       "AAPL": [
-        36,
+        33,
         130.36
       ],
       "TSLA": [
-        28,
+        18,
         683.8
       ],
       "MSFT": [
-        3,
+        15,
         255.85
       ]
     },
-    "available_funds": 39000.12,
+    "available_funds": 39000,
     "starting_funds": 50000
   },
   "Jerry": {
