@@ -4,6 +4,7 @@ require_relative './stock.rb'
 require 'json'
 require 'tty-prompt'
 require 'tty-table'
+require 'dotenv/load'
 
 
 # Welcoming message to the application
@@ -317,7 +318,7 @@ def main()
         handle_exit()
     end
     puts "Please enter your public IEX key:"
-    key = gets.chomp!
+    key = ENV['IEXKEY']
     puts "Verifying API Key..."
     until verify_iex_key(key) == true
         puts "Sorry, that key did not work, please enter a new key or enter 'quit':"
