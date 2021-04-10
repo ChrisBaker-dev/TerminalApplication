@@ -343,7 +343,7 @@ if ARGV.include? "--help" and ARGV.size == 1
     puts "3) View the README.md document for instructions on obtaining a API Key"
     puts "Or navigate to my github account at https://github.com/ChrisBaker-dev/TerminalApplication"
     puts "4)Once you have obtained your API Key, type [echo 'YOUR API KEY HERE' >> .env] in \nthe command line without the braces[]"
-    puts "This will automate the software to make loading the application much more efficiently"
+    puts "This will automate the software to make loading the application much more efficient"
     puts "\n\n"
     puts "COMMANDS:"
     puts "ruby main.rb --help"
