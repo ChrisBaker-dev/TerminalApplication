@@ -84,7 +84,7 @@ def load_profile(username, file)
     hash = load_profiles(file)
     if !hash.key?(username)
         puts ProfileDoesntExist.new("This profile does not exist")
-        login_check()
+        return login_check()
     end
     profile = Profile.new(username)
     profile.add_starting_funds(hash[username]['starting_funds'])
@@ -115,9 +115,9 @@ def profile_controller(prompt, profile)
         profile.update_growth
         table = profile.profile_summary
         puts table.render(:ascii, alignments: [:left, :center])
-        profile_controller(prompt, profile)
+        return profile_controller(prompt, profile)
     when "Trade"
-        ticker_info(profile, prompt)
+        return ticker_info(profile, prompt)
     when "Investment Summary"
         begin
             update_stock_values(profile)
@@ -126,7 +126,7 @@ def profile_controller(prompt, profile)
             profile_controller(prompt, profile)
         rescue Exception
             puts "You have no investments at this time"
-            profile_controller(prompt, profile)
+            return profile_controller(prompt, profile)
         end
     when "Quit"
         puts "Thank you for using CB Finance"
@@ -164,8 +164,11 @@ def verify_stock(profile)
     puts "What stock would you like to look at?"
     stock = gets.chomp.upcase
     until is_stock?(stock, profile.key) == true
-        puts "We can not find this stock in the database, please enter another"
+        puts "We can not find this stock in the database, please enter another or 'quit'"
         stock = gets.chomp.upcase
+        if stock.downcase == 'quit'
+            return profile_controller(TTY::Prompt.new, profile)
+        end
     end
     return stock
 end
@@ -189,16 +192,22 @@ def ticker_info(profile, prompt)
     when "Buy Stock"
         stock = verify_stock(profile)
         ticker = Stock.new(stock, profile.key)
-        purchase_controller(ticker, profile, prompt)
+        return purchase_controller(ticker, profile, prompt)
     when "Sell Stock"
         # Display current holdings
-        table = profile.display_holdings
-        puts table.render(:ascii, alignments: [:left, :center])
-        stock = verify_stock(profile)
-        ticker = Stock.new(stock, profile.key)
-        sell_controller(ticker, profile, prompt)
+        begin
+
+            table = profile.display_holdings
+            puts table.render(:ascii, alignments: [:left, :center])
+            stock = verify_stock(profile)
+            ticker = Stock.new(stock, profile.key)
+            return sell_controller(ticker, profile, prompt)
+        rescue Exception
+            puts "You do not have any stocks to sell"
+            return profile_controller(prompt, profile)
+        end
     when "Back"
-        profile_menu(prompt)
+        return profile_controller(prompt, profile)
     end
 
 end
@@ -206,7 +215,7 @@ end
     # when "Stock Information"
     #     get_stock_info(ticker, profile, prompt)
 
-
+# Currently not in use - will display news on stocks
 def get_stock_info(stock, profile, prompt)
     table =  stock.stock_info()
     puts table.render(:ascii, alignments: [:left, :center])
@@ -224,16 +233,14 @@ def purchase_controller(ticker, profile, prompt)
     num_shares, price = num_shares(ticker, profile, prompt, action)
     if verify_funds_available(profile, num_shares, price) == false
         puts "Insufficient funds"
-        ticker_info(profile, prompt)
-        return
+        return ticker_info(profile, prompt)
     else 
         profile.add_investments(ticker.ticker, num_shares, price)
         puts "Successfully purchased #{num_shares} shares of #{ticker.ticker} for $#{(num_shares * price).round(2)}"
         profile.update_available_funds(profile.available_funds - (num_shares * price).round(2))
         save_profile(profile, 'profiles.json')
-        profile_controller(prompt, profile)
+        return profile_controller(prompt, profile)
     end
-    return
 end
 
 # Sells stock and updates profile accordingly
@@ -248,7 +255,7 @@ def sell_controller(ticker, profile, prompt)
     profile.update_available_funds(profile.available_funds + (num_shares * price).round(2))
     profile.remove_investments(ticker.ticker, num_shares)
     save_profile(profile, 'profiles.json')
-    profile_controller(prompt, profile)
+    return profile_controller(prompt, profile)
 end
 
 def num_shares(ticker, profile, prompt, action)
@@ -270,7 +277,7 @@ def num_shares(ticker, profile, prompt, action)
         end
         return [num_shares.to_i, ticker.get_price()]
     when "No"
-        profile_controller(prompt, profile)
+        return profile_controller(prompt, profile)
     end
 end
 
@@ -316,11 +323,11 @@ def main()
     when "Sign-up"
         profile = create_profile('profiles.json')
         profile.update_available_funds(profile.starting_funds)
-        save_profile(profile, 'profiles.json')
+        return save_profile(profile, 'profiles.json')
     when "Login"
         profile = login_check()
     when "Quit"
-        handle_exit()
+        return handle_exit()
     end
     puts "Please enter your public IEX key:"
     key = ENV['IEXKEY']
@@ -329,13 +336,12 @@ def main()
         puts "Sorry, that key did not work, please enter a new key or enter 'quit':"
         key = gets.chomp!
         if key == 'quit'
-            handle_exit()
+            return handle_exit()
         end
         puts "Verifying API Key..."
     end
     profile.add_key(key)
     profile_controller(prompt, profile)
-
 end
 
 if ARGV.size == 0
