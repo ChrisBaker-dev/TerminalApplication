@@ -14,6 +14,9 @@ This application is a finance application designed to help people who wish to le
     2. View stock information (ex. prices, market change, news)
     3. Execute trades
 
+## Source Control Respository
+https://github.com/ChrisBaker-dev/TerminalApplication
+
 
 
 ## Required Libraries
@@ -46,6 +49,7 @@ This application will allow people to create a profile and allot a sum of money 
 
 ## What problem am I solving and why develop it?
 I created this software for a couple reasons. First, understanding the stock market and executing trades can seem daunting at first glance. This application aims to allow people to learn without financial risk or, for those who are looking to test new investment strategies, test those strategies without risk. 
+
 ## Target Audience
 This application is intended for anyone who wishes to learn more about trading and the financial world. You will be able to implement your own trading techniques, track your own growth and learn about the financial market. There is no required investment for this application, you will be trading fake money.
 
@@ -97,4 +101,42 @@ Checklist
 1. Update data to be displayed
 2. Create tables to display to user
 3. Make calculations to display to user
-4. 
+4. Utilize tty-table to format
+5. Test outputs are correct
+
+# Installation
+
+Download and install Ruby onto your computer. Instructions on how to do so can be found here: [Ruby installation guide](https://www.ruby-lang.org/en/documentation/installation/ "Ruby installation")
+
+
+
+
+## How to get an IEX API Key
+
+1. Go to https://iexcloud.io/
+2. Click Sign-in in the top right corner
+![iex sign in](/docs/iex-sign-in.png)
+3. Click create an account
+4. Set account type to individual and complete your details
+5. Agree to terms and conditions and click Create Account
+6. You will be redirected to a page to choose a plan.
+7. Scroll to the bottom of the page and select the free plan.
+![iex free plan](/docs/iex-free-plan.png)
+8. Verify your email address
+    - They will require you to enter a 6 digit code emailed to you after you click the verify email link
+9. You should now be on the main page for their site, if you try to refresh the page, it may have an error (on their end). If this happens, go to this URL: https://iexcloud.io/console/
+10. Your screen should now look similar to this
+![iex home](/docs/iex-home.png)
+11. Click on API Tokens (Left side under Home)
+12. Copy the publishable API Key
+![iex key](/docs/iex-key.png)
+13. You will use this key in order to run my application. If you have any errors, please return to your key and ensure you have copied it properly.
+14. In order to save time in the application, follow these steps (if you have already ran followed the installation commands, if not please do so):
+
+![src file](/docs/src-file.png)
+
+    - Navigate to to the applications source folder
+    - type echo "YOUR API KEY HERE" >> .env
+    - Hit enter
+15. You should now see your API key in the .env file and the application will not ask you to manually enter it
+16. Happy Trading!
