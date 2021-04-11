@@ -1,6 +1,7 @@
+#!/bin/bash
 echo "Cloning repository"
 git clone "https://github.com/ChrisBaker-dev/TerminalApplication.git"
-cd src
+cd TerminalApplication/src
 bundle install
 touch .env
 echo "IEXKEY=" >> .env

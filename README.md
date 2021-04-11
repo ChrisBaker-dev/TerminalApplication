@@ -116,8 +116,7 @@ Download and install Ruby onto your computer. Instructions on how to do so can b
 
 Run this command in your terminal:
 ```
-sh -c "$(curl -fsSL 
-https://raw.githubusercontent.com/ChrisBaker-dev/TerminalApplication/main/src/install.sh)"
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ChrisBaker-dev/TerminalApplication/main/src/install.sh)"
 ```
 
 
