@@ -114,6 +114,12 @@ In order to view the summaries better, I will create a table
 
 Download and install Ruby onto your computer. Instructions on how to do so can be found here: [Ruby installation guide](https://www.ruby-lang.org/en/documentation/installation/ "Ruby installation")
 
+Run this command in your terminal:
+```
+sh -c "$(curl -fsSL 
+https://raw.githubusercontent.com/ChrisBaker-dev/TerminalApplication/main/src/install.sh)"
+```
+
 
 
 
