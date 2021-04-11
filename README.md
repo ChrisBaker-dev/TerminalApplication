@@ -1,18 +1,12 @@
 # Christopher Baker - T1A3 Terminal Application
 
-
-## References
-### iex-ruby-client 
-iex-ruby-client is a gem used to connect with the IEX cloud API. 
-https://github.com/dblock/iex-ruby-client
-
-
 ## Description
 This application is a finance application designed to help people who wish to learn more about trading on a stock market. It allows users to:
 
-    1. Create a profile to trade with
-    2. View stock information (ex. prices, market change, news)
-    3. Execute trades
+1. Create a profile to trade with
+2. View Account/Investment summaries
+3. Execute trades
+
 
 ## R4 - Repository
 ---
@@ -163,6 +157,9 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ChrisBaker-dev/TerminalApp
 ```
 
 **If you are having issues with this command you may need to check your gem paths**
+
+### Hardware Requirements
+This application should run on all platforms. No known hardware requirements.
 
 ## How to get an IEX API Key
 
