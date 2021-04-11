@@ -2,59 +2,19 @@
   "ChrisB": {
     "description": "",
     "investments": {
-      "AAPL": [
-        32,
-        130.36
-      ],
-      "TSLA": [
-        18,
-        683.8
-      ],
       "MSFT": [
-        27,
+        8,
         255.85
       ]
     },
-    "available_funds": 36062.8,
+    "available_funds": 47953.2,
     "starting_funds": 50000
   },
-  "Jerry": {
+  "Chris": {
     "description": "",
     "investments": {
 },
-    "available_funds": 10000,
-    "starting_funds": 10000
-  },
-  "jey": {
-    "description": "",
-    "investments": {
-      "MSFT": [
-        10,
-        255.85
-      ]
-    },
-    "available_funds": 7441.5,
-    "starting_funds": 10000
-  },
-  "mike": {
-    "description": "",
-    "investments": {
-},
-    "available_funds": 10000,
-    "starting_funds": 10000
-  },
-  "jim": {
-    "description": "",
-    "investments": {
-},
-    "available_funds": 10000,
-    "starting_funds": 10000
-  },
-  "jj": {
-    "description": "",
-    "investments": {
-},
-    "available_funds": 10000,
-    "starting_funds": 10000
+    "available_funds": 10,
+    "starting_funds": 10
   }
 }

@@ -46,7 +46,7 @@ end
 
 # gets a username from user
 def get_username()
-    puts "Please enter a username:"
+    puts "Please enter a username or type 'quit' to exit:"
     return gets.chomp!
 end
 
@@ -192,7 +192,7 @@ def ticker_info(profile, prompt)
     when "Buy Stock"
         stock = verify_stock(profile)
         ticker = Stock.new(stock, profile.key)
-        return purchase_controller(ticker, profile, prompt)
+        purchase_controller(ticker, profile, prompt)
     when "Sell Stock"
         # Display current holdings
         begin
@@ -201,10 +201,10 @@ def ticker_info(profile, prompt)
             puts table.render(:ascii, alignments: [:left, :center])
             stock = verify_stock(profile)
             ticker = Stock.new(stock, profile.key)
-            return sell_controller(ticker, profile, prompt)
+            sell_controller(ticker, profile, prompt)
         rescue Exception
             puts "You do not have any stocks to sell"
-            return profile_controller(prompt, profile)
+            profile_controller(prompt, profile)
         end
     when "Back"
         return profile_controller(prompt, profile)
@@ -239,7 +239,7 @@ def purchase_controller(ticker, profile, prompt)
         puts "Successfully purchased #{num_shares} shares of #{ticker.ticker} for $#{(num_shares * price).round(2)}"
         profile.update_available_funds(profile.available_funds - (num_shares * price).round(2))
         save_profile(profile, 'profiles.json')
-        return profile_controller(prompt, profile)
+        profile_controller(prompt, profile)
     end
 end
 
@@ -249,13 +249,16 @@ def sell_controller(ticker, profile, prompt)
     num_shares, price = num_shares(ticker, profile, prompt, action)
     if profile.get_stock_shares(ticker.ticker, num_shares) == false
         puts "You can not sell more shares than you own."
-        num_shares, price = num_shares(ticker, profile, prompt, action)
+        # num_shares, price = num_shares(ticker, profile, prompt, action)
+        return ticker_info(profile, prompt)
+
+    else
+        puts "Successfully sold #{num_shares} shares of #{ticker.ticker} for $#{(num_shares * price).round(2)}"
+        profile.update_available_funds(profile.available_funds + (num_shares * price).round(2))
+        profile.remove_investments(ticker.ticker, num_shares)
+        save_profile(profile, 'profiles.json')
+        profile_controller(prompt, profile)
     end
-    puts "Successfully sold #{num_shares} shares of #{ticker.ticker} for $#{(num_shares * price).round(2)}"
-    profile.update_available_funds(profile.available_funds + (num_shares * price).round(2))
-    profile.remove_investments(ticker.ticker, num_shares)
-    save_profile(profile, 'profiles.json')
-    return profile_controller(prompt, profile)
 end
 
 def num_shares(ticker, profile, prompt, action)
@@ -277,7 +280,8 @@ def num_shares(ticker, profile, prompt, action)
         end
         return [num_shares.to_i, ticker.get_price()]
     when "No"
-        return profile_controller(prompt, profile)
+        profile_controller(prompt, profile)
+        return
     end
 end
 
@@ -323,7 +327,7 @@ def main()
     when "Sign-up"
         profile = create_profile('profiles.json')
         profile.update_available_funds(profile.starting_funds)
-        return save_profile(profile, 'profiles.json')
+        save_profile(profile, 'profiles.json')
     when "Login"
         profile = login_check()
     when "Quit"
@@ -352,7 +356,7 @@ if ARGV.include? "--help" and ARGV.size == 1
     puts "Welcome to the CB Finance Help Room"
     puts "To use this app, follow these instructions"
     puts "1) Direct your terminal to the src folder containing this application"
-    puts "2) type ./install.sh - This will install all dependencies for my application"
+    puts "2) type ./manual_install.sh - This will install all dependencies for my application"
     puts "Alternatively, view the README.md doc or navigate to my github for installation instructions https://github.com/ChrisBaker-dev/TerminalApplication"
     puts "3) View the README.md document for instructions on obtaining a API Key"
     puts "Or navigate to my github account at https://github.com/ChrisBaker-dev/TerminalApplication"
@@ -361,5 +365,4 @@ if ARGV.include? "--help" and ARGV.size == 1
     puts "\n\n"
     puts "COMMANDS:"
     puts "ruby main.rb --help"
-    puts "ruby main.rb profile_name  => skips login screen if valid"
 end

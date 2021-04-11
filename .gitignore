@@ -4,3 +4,4 @@ src/test/Gemfile.lock
 src/.DS_Store
 src/iex_key.csv
 src/.env
+src/test/.env

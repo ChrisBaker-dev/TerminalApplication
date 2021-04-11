@@ -14,36 +14,16 @@ This application is a finance application designed to help people who wish to le
     2. View stock information (ex. prices, market change, news)
     3. Execute trades
 
-## Source Control Respository
+## R4 - Repository
+---
+Repository:
 https://github.com/ChrisBaker-dev/TerminalApplication
 
+Trello: 
+https://trello.com/b/rACuCMep/chris-finance-app
 
-
-## Required Libraries
-### TTY-Prompt
-TTY-Prompt is going to make the users life easier while navigating the application. It speeds up our processes so the user does not need to type each command. Example, instead of needing to type "login", you will able to select login as an option from the prompt.
-```ruby
-gem install tty-prompt
-```
-
-### TTY-Table
-TTY-Table is going to allow us to show you information with greater readability.
-```ruby
-gem install tty-table
-```
-
-### IEX Ruby Client
-IEX Ruby Client allows us to access the IEX API. IEX is a cloud finance company that gives current information on all stock requests.
-```ruby
-gem install iex-ruby-client
-```
-
-### JSON
-JSON generally comes pre installed with your ruby environment, but just incase you do not have it, please install it. JSON will allow us to store data for our profiles so we can track information and learn more about our financial trades.
-```ruby
-gem install json
-```
-
+## R5 - Purpose and Scope
+---
 ## What will this application do?
 This application will allow people to create a profile and allot a sum of money to invest with. The user will then begin trading in their desired stocks and can track their profiles growth and stock values over time.
 
@@ -63,7 +43,8 @@ Upon loading the application, you will be able to select from already created pr
 
 From there, your trading journey will begin. I'd recommend looking through the various menus and selecting the help option to guide you through what they accomplish.
 
-## Features
+## R6 - Features
+---
 This applications comes with three main features:
 1. Profile Creation
 2. Execution of trades (buy/sell)
@@ -88,7 +69,8 @@ Following the checks, we can update the profile information and give the user fe
 
 In order to ensure these features work, I will have to parse hashes/lists, utilize the profile class and handle errors reguarding empty data structures.
 
-## Development Outline - user interaction/experience
+## R7 -Development Outline - User Interaction/Experience
+---
 
 ### Profile Creation
 **Profile creation** will be prompted to the user on startup. They will be able to select between logging into an existing profile or create a new one. The user will receive feedback from the application on what steps they can make, and if errors are beiung encountered, they will be displayed to the user and ask for a new input.
@@ -107,9 +89,10 @@ In order to ensure these features work, I will have to parse hashes/lists, utili
 1. Upon selecting "Account Summary", the user will be displayed a table with their username, available funds to trade with and their growth. The growth percentage has received updated stock values from their holdings and calculated it into the percentage. The user is then redirected to the main menu.
 2. The investment summary also provides the user with a table containing their Stock, number of shares, current price of the stock, and total value of the holding. After this information has been displayed, the user is redirected to the main menu.
 
+## R8 - Control Flow Diagram
+![control flow diagram](docs/control-flow-diagram.png)
 
-
-## Implementation Plan
+## R9 - Implementation Plan
 ### Profile Creation
 Checklist
 1. Create a profile class to store data
@@ -147,25 +130,30 @@ Checklist
 ### Profile/Investment Summaries
 Checklist
 1. Update data to be displayed 
-- Approximation of time needed to complete: 2 hours. Deadline: Friday April 10, 2021. Priority: HIGH.
+- Approximation of time needed to complete: 2 hours. Deadline: Friday April 9, 2021. Priority: HIGH.
 
 2. Create tables to display to user
 
- Approximation of time needed to complete: 1 hour. Deadline Friday April 10, 2021. Priority: HIGH.
+ Approximation of time needed to complete: 1 hour. Deadline Friday April 9, 2021. Priority: HIGH.
 
 3. Make calculations to display to user
 
-Information needs to be calculated in order to get a proper summary. For example, all stock values need to be checked against their current values in order to see how much growth our profile has made. Approximation of time needed to complete: 1 hour. Deadline Friday April 10, 2021. Priority: HIGH.
+Information needs to be calculated in order to get a proper summary. For example, all stock values need to be checked against their current values in order to see how much growth our profile has made. 
+- Approximation of time needed to complete: 1 hour. Deadline Friday April 9, 2021. Priority: HIGH.
 
 4. Utilize tty-table to format
-
+- Approximation of time needed to complete: 1 hours. Deadline: Friday April 9, 2021. Priority: HIGH.
 
 
 5. Test outputs are correct
 
 Testing is required to make sure tables are being generated properly. Handle exceptions for tables trying to be generated when no trades have been made. 
 
-# Installation
+- Approximation of time needed to complete: 3 hours. Deadline: Saturday April 11, 2021. Priority: HIGH.
+
+
+
+# R10 - Installation
 
 Download and install Ruby onto your computer. Instructions on how to do so can be found here: [Ruby installation guide](https://www.ruby-lang.org/en/documentation/installation/ "Ruby installation")
 
@@ -175,9 +163,6 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ChrisBaker-dev/TerminalApp
 ```
 
 **If you are having issues with this command you may need to check your gem paths**
-
-
-
 
 ## How to get an IEX API Key
 
@@ -208,3 +193,17 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ChrisBaker-dev/TerminalApp
     - Hit enter
 15. You should now see your API key in the .env file and the application will not ask you to manually enter it
 16. Happy Trading!
+
+## Referenced Sources
+This application was made in help from IEX cloud. Their software is free to use individually and should not be used for commercial purposes. Please view their terms and conditions here: https://iexcloud.io/terms/
+
+I also used Ruby Gems that I would like to recognize.
+
+### iex-ruby-client
+https://github.com/dblock/iex-ruby-client
+### tty-prompt
+https://github.com/piotrmurach/tty-prompt
+### tty-table
+https://github.com/piotrmurach/tty-table
+### dotenv
+https://github.com/bkeepers/dotenv
