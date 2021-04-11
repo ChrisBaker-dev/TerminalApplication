@@ -119,10 +119,15 @@ def profile_controller(prompt, profile)
     when "Trade"
         ticker_info(profile, prompt)
     when "Investment Summary"
-        update_stock_values(profile)
-        table = profile.display_holdings()
-        puts table.render(:ascii, alignments: [:left, :center])
-        profile_controller(prompt, profile)
+        begin
+            update_stock_values(profile)
+            table = profile.display_holdings()
+            puts table.render(:ascii, alignments: [:left, :center])
+            profile_controller(prompt, profile)
+        rescue Exception
+            puts "You have no investments at this time"
+            profile_controller(prompt, profile)
+        end
     when "Quit"
         puts "Thank you for using CB Finance"
         exit
@@ -323,6 +328,9 @@ def main()
     until verify_iex_key(key) == true
         puts "Sorry, that key did not work, please enter a new key or enter 'quit':"
         key = gets.chomp!
+        if key == 'quit'
+            handle_exit()
+        end
         puts "Verifying API Key..."
     end
     profile.add_key(key)

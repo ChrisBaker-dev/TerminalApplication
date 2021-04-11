@@ -21,7 +21,14 @@
   "Jerry": {
     "description": "",
     "investments": {
-    },
+},
+    "available_funds": 10000,
+    "starting_funds": 10000
+  },
+  "jey": {
+    "description": "",
+    "investments": {
+},
     "available_funds": 10000,
     "starting_funds": 10000
   }
