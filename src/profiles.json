@@ -28,8 +28,12 @@
   "jey": {
     "description": "",
     "investments": {
-},
-    "available_funds": 10000,
+      "MSFT": [
+        10,
+        255.85
+      ]
+    },
+    "available_funds": 7441.5,
     "starting_funds": 10000
   }
 }

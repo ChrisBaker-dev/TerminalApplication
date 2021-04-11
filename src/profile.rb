@@ -27,8 +27,8 @@ class Profile
 
     # Total Percentage growth of profiles investments/funds
     def update_growth()
-        @growth = (((get_holdings_total_value + @available_funds)/
-                    @starting_funds).round(2)) * 100
+        @growth = ((((get_holdings_total_value + @available_funds)/
+                    @starting_funds).round(2)) * 100) - 100
         return @growth
     end
 
