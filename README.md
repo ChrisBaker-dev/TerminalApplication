@@ -98,8 +98,14 @@ Checklist
 
 ### Profile/Investment Summaries
 Checklist
-1. Update data to be displayed
+1. Update data to be displayed 
+
+When viewing profile/investment summaries, the data needs to be updated to get current prices. Approximation of time needed to complete: 2 hours. Deadline: Friday April 10, 2021.
+
 2. Create tables to display to user
+
+In order to view the summaries better, I will create a table 
+
 3. Make calculations to display to user
 4. Utilize tty-table to format
 5. Test outputs are correct
